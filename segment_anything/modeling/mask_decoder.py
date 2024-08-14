@@ -124,7 +124,8 @@ class MaskDecoder(nn.Module):
 
         # Expand per-image data in batch direction to be per-mask
         src = torch.repeat_interleave(image_embeddings, tokens.shape[0], dim=0)
-        src = src + dense_prompt_embeddings
+        if dense_prompt_embeddings is not None:
+            src = src + dense_prompt_embeddings
         pos_src = torch.repeat_interleave(image_pe, tokens.shape[0], dim=0)
         b, c, h, w = src.shape
 

@@ -110,18 +110,16 @@ class SamOnnxModel(nn.Module):
         image_embeddings: torch.Tensor,
         point_coords: torch.Tensor,
         point_labels: torch.Tensor,
-        mask_input: torch.Tensor,
-        has_mask_input: torch.Tensor,
         orig_im_size: torch.Tensor,
     ):
         sparse_embedding = self._embed_points(point_coords, point_labels)
-        dense_embedding = self._embed_masks(mask_input, has_mask_input)
+
 
         masks, scores = self.model.mask_decoder.predict_masks(
             image_embeddings=image_embeddings,
             image_pe=self.model.prompt_encoder.get_dense_pe(),
             sparse_prompt_embeddings=sparse_embedding,
-            dense_prompt_embeddings=dense_embedding,
+            dense_prompt_embeddings = None
         )
 
         if self.use_stability_score:
